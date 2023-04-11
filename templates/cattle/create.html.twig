@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Cadastro{% endblock %}
+
+{% block body %}
+<h1 class="title-page">Novo registro</h1>
+<div class="subtitle-page">
+  <small>Cadastrar novo animal no sistema</small>
+</div>
+
+<div>
+  {{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-primary" type="submit">Salvar</button>
+  {{ form_end(form) }}
+</div>
+{% endblock %}
