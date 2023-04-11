@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Cattle;
 use App\Form\CattleType;
+use App\Repository\CattleRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,9 +14,11 @@ use Symfony\Component\Routing\Annotation\Route;
 class CattleController extends AbstractController
 {
     #[Route('/cattle', name: 'homepage')]
-    public function index(): Response
+    public function index(CattleRepository $cattleRepository): Response
     {
-        return $this->render('cattle/index.html.twig');
+        $data['cattles'] = $cattleRepository->findAll();
+
+        return $this->render('cattle/index.html.twig', $data);
     }
 
     #[Route('/cattle/create', name: 'new_cattle')]

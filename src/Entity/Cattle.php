@@ -5,8 +5,11 @@ namespace App\Entity;
 use App\Repository\CattleRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: CattleRepository::class)]
+#[UniqueEntity('cod', message: "Esse código já existe no sistema")]
 class Cattle
 {
     #[ORM\Id]
@@ -14,7 +17,8 @@ class Cattle
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::BIGINT)]
+    #[ORM\Column(type: Types::BIGINT, unique: true)]
+    #[Assert\Positive]
     private ?string $cod = null;
 
     #[ORM\Column]
