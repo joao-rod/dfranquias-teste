@@ -19,17 +19,27 @@ class CattleController extends AbstractController
     }
 
     #[Route('/cattle/create', name: 'new_cattle')]
-    public function create(EntityManagerInterface $em): Response
+    public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $form = $this->createForm(CattleType::class);
-        $data['form'] = $form;
+        $cattle = new Cattle;
 
-        // $cattle = new Cattle;
-        // $cattle->setCod(293);
+        $form = $this->createForm(CattleType::class, $cattle);
+        $form->handleRequest($request); 
 
-        // $em->persist($cattle);
-        // $em->flush();
+        // $data['form'] = $form;
 
-        return $this->renderForm('cattle/create.html.twig', $data);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($cattle);
+            $entityManager->flush();
+        
+            $this->addFlash('success', 'Animal adicionado com sucesso!');
+
+            return $this->redirectToRoute('homepage');
+        }
+
+        // return $this->renderForm('cattle/create.html.twig', $data);
+        return $this->render('cattle/create.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 }
