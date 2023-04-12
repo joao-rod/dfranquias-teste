@@ -44,7 +44,9 @@ class CattleType extends AbstractType {
         'constraints' => [
           new NoFutureDate(),
         ],
-      ]);
+      ])
+      
+      ->setMethod('POST');
   }
 
   // Configura a label para o nome do primeiro parametro do método add acima
