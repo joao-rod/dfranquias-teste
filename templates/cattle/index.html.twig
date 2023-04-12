@@ -5,17 +5,25 @@
 {% block body %}
 
 {% for success in app.flashes('success') %}
-    <div class="alert alert-info alert-dismissible fade show container text-center fixed-top swing" role="alert">
-        {{ success }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-    </div>
+<div class="alert alert-info alert-dismissible fade show container text-center fixed-top swing" role="alert">
+    {{ success }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
 {% endfor %}
 
+{% if cattles is empty %}
+<div class="d-flex flex-column align-items-center">
+    <h4>
+        Não há animais cadastrados no sistema!!
+    </h4>
+    <a href="{{ path('new_cattle') }}" class="btn btn-primary">Adicionar um registro</a>
+</div>
+
+{% else %}
 <h1 class="title-page">Registros</h1>
 <div class="subtitle-page">
     <small>Registros cadastrados no sistema</small>
 </div>
- 
 <div>
     <table class="table table-hover table-bordered">
         <thead class="thead-dark">
@@ -31,20 +39,55 @@
 
         <tbody>
             {% for cattle in cattles %}
-                <tr class="text-center">
-                    <th scope="row">{{ cattle.cod }}</th>
-                    <td>{{ cattle.milk }}</td>
-                    <td>{{ cattle.weekportion }}</td>
-                    <td>{{ cattle.cattleweight }}</td>
-                    <td>{{ cattle.birth.format('d/m/Y') }}</td>
-                    <td>
-                        <a href="{{ path('update_cattle', { id: cattle.id }) }}" class="btn btn-outline-primary btn-sm"><i class="fa-solid fa-pen-to-square"></i></a>
-                        <a href="{{ path('delete_cattle', { id: cattle.id }) }}" class="btn btn-outline-danger btn-sm"><i class="fa-solid fa-trash-can"></i></a>
-                    </td>
-                </tr>
+            <tr class="text-center">
+                <th scope="row">{{ cattle.cod }}</th>
+                <td>{{ cattle.milk }}</td>
+                <td>{{ cattle.weekportion }}</td>
+                <td>{{ cattle.cattleweight }}</td>
+                <td>{{ cattle.birth.format('d/m/Y') }}</td>
+                <td>
+                    {% set index = cattle.id %}
+
+                    <a href="{{ path('update_cattle', { id: cattle.id }) }}" class="btn btn-outline-primary btn-sm">
+                        <i class="fa-solid fa-pen-to-square"></i>
+                    </a>
+
+                    <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal"
+                        data-bs-target="#confirmDelete{{ index }}">
+                        <i class="fa-solid fa-trash-can"></i>
+                    </button>
+                </td>
+                <!-- Modal -->
+                <div class="modal fade" id="confirmDelete{{ index }}" aria-labelledby="confirmDeleteLabel"
+                aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered modal-sm">
+                    <div class="modal-content">
+                        
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="confirmDeleteLabel">Excluir item?</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                        </div>
+
+                        <div class="modal-body">
+                            Após deletar este registro, não será possível recuperálo. Deseja prosseguir?
+                        </div>
+
+                        <div class="modal-footer">
+                            <a href="{{ path('delete_cattle', { id: index }) }}" class="btn btn-danger">
+                                Confirmar
+                            </a>
+                            <button type="button" class="btn btn-secondary"
+                                data-bs-dismiss="modal">Cancelar</button>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            </tr>
             {% endfor %}
         </tbody>
     </table>
-
 </div>
+{% endif %}
 {% endblock %}
