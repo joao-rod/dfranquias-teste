@@ -21,6 +21,7 @@ class CattleController extends AbstractController
         return $this->render('cattle/index.html.twig', $data);
     }
 
+
     #[Route('/cattle/create', name: 'new_cattle')]
     public function create(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -29,7 +30,9 @@ class CattleController extends AbstractController
         $form = $this->createForm(CattleType::class, $cattle);
         $form->handleRequest($request); 
 
-        // $data['form'] = $form;
+        $data['titlePage'] = 'Novo registro';
+        $data['subTitle'] = 'Cadastrar novo animal no sistema';
+        $data['form'] = $form;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($cattle);
@@ -40,19 +43,24 @@ class CattleController extends AbstractController
             return $this->redirectToRoute('homepage');
         }
 
-        // return $this->renderForm('cattle/create.html.twig', $data);
-        return $this->render('cattle/create.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->renderForm('cattle/create.html.twig', $data);
+        // return $this->render('cattle/create.html.twig', [
+        //     'form' => $form->createView(),
+        // ]);
     }
+
 
     #[Route('/cattle/update/{id}', name: 'update_cattle')]
     public function update($id, Request $request, EntityManagerInterface $entityManager, CattleRepository $cattleRepository)
     {
         $cattle = $cattleRepository->find($id);
-        $form = $this->createForm(CattleType::class, $cattle)->remove('cod');
 
+        $form = $this->createForm(CattleType::class, $cattle)->remove('cod');
         $form->handleRequest($request);
+
+        $data['titlePage'] = 'Atualizar registro';
+        $data['subTitle'] = 'Modificar dados do animal no sistema';
+        $data['form'] = $form;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
@@ -62,10 +70,9 @@ class CattleController extends AbstractController
             return $this->redirectToRoute('homepage');
         }
 
-        return $this->render('cattle/create.html.twig', [
-            'form' => $form->createView(),
-        ]);
+        return $this->renderForm('cattle/create.html.twig', $data);
     }
+    
 
     #[Route('/cattle/delete/{id}', name: 'delete_cattle')]
     public function delete($id, EntityManagerInterface $entityManager, CattleRepository $cattleRepository): Response
