@@ -1,0 +1,23 @@
+{% extends 'cattle/index.html.twig' %}
+
+{% block title %}Sua busca{% endblock %}
+
+{% block body %}
+{% block formSearch %}{% endblock %}
+
+{% if cattles is empty %}
+<div class="d-flex flex-column align-items-center">
+  <h4>
+    Não há animais cadastrados com esta data de nascimento!!
+  </h4>
+</div>
+
+{% else %}
+{{ parent() }}
+{% endif %}
+
+<div class="text-center mt-5">
+  <a href="{{ path('homepage') }}" class="btn btn-outline-primary">Voltar à home</a>
+</div>
+
+{% endblock %}

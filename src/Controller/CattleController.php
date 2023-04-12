@@ -5,17 +5,21 @@ namespace App\Controller;
 use App\Entity\Cattle;
 use App\Form\CattleType;
 use App\Repository\CattleRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class CattleController extends AbstractController
 {
-    #[Route('/cattle', name: 'homepage')]
+    #[Route('/', name: 'homepage')]
     public function index(CattleRepository $cattleRepository): Response
     {
+        $data['titlePage'] = 'Todos os registros';
+        $data['subTitle'] = 'Registros cadastrados no sistema';
         $data['cattles'] = $cattleRepository->findAll();
 
         return $this->render('cattle/index.html.twig', $data);
@@ -55,7 +59,11 @@ class CattleController extends AbstractController
     {
         $cattle = $cattleRepository->find($id);
 
-        $form = $this->createForm(CattleType::class, $cattle)->remove('cod');
+        // $form = $this->createForm(CattleType::class, $cattle)->remove('cod');
+        $form = $this->createForm(CattleType::class, $cattle)->add('cod', IntegerType::class, [
+            'label' => 'Código do animal',
+            'disabled' => true,
+        ]);
         $form->handleRequest($request);
 
         $data['titlePage'] = 'Atualizar registro';
@@ -85,5 +93,19 @@ class CattleController extends AbstractController
         $this->addFlash('success', 'Registro deletado com sucesso!!');
 
         return $this->redirectToRoute('homepage');
+    }
+
+
+    #[Route('/cattle/search', name: 'search_cattle')]
+    public function search(Request $request, CattleRepository $cattleRepository): Response
+    {
+        $codSearch = $request->request->get('search');
+        $date = DateTime::createFromFormat("Y-m-d", $codSearch);
+
+        $data['titlePage'] = 'Resultados da sua busca';
+        $data['subTitle'] = 'Registros cadastrados encontrados no sistema';
+        $data['cattles'] = $cattleRepository->findBy(['birth' => $date]);
+
+        return $this->render('cattle/search.html.twig', $data);
     }
 }

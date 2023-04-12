@@ -3,7 +3,6 @@
 {% block title %}Início{% endblock %}
 
 {% block body %}
-
 {% for success in app.flashes('success') %}
 <div class="alert alert-info alert-dismissible fade show container text-center fixed-top swing" role="alert">
     {{ success }}
@@ -20,10 +19,18 @@
 </div>
 
 {% else %}
-<h1 class="title-page">Registros</h1>
+<h1 class="title-page">{{ titlePage }}</h1>
 <div class="subtitle-page">
-    <small>Registros cadastrados no sistema</small>
+    <small>{{ subTitle }}</small>
 </div>
+
+{% block formSearch %}
+<label for="search">Insira uma data para busca:</label>
+<form action="{{ path('search_cattle') }}" method="post" class="d-flex mb-5" role="search">
+    <input class="form-control me-2" id="search" name="search" type="date" aria-label="Search">
+    <button class="btn btn-primary" type="submit">Buscar</button>
+</form>
+{% endblock %}
 
 <div>
     <table class="table table-hover table-bordered">
