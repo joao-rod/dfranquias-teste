@@ -18,7 +18,7 @@ class Cattle
     private ?int $id = null;
 
     #[ORM\Column(type: Types::BIGINT, unique: true)]
-    #[Assert\Positive]
+    #[Assert\Positive(message: 'Valor inválido! Você deve inserir um valor positivo')]
     private ?string $cod = null;
 
     #[ORM\Column]
