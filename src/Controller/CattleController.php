@@ -108,4 +108,13 @@ class CattleController extends AbstractController
 
         return $this->render('cattle/search.html.twig', $data);
     }
+
+
+    #[Route('/cattle/show/{id}', name: 'show_cattle')]
+    public function show($id, CattleRepository $cattleRepository): Response
+    {
+        $data['cattle'] = $cattleRepository->find($id);
+
+        return $this->render('cattle/show.html.twig', $data);
+    }
 }

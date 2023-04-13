@@ -1,0 +1,91 @@
+{% extends 'cattle/index.html.twig' %}
+
+{% block title %}Animal de código: {{ cattle.cod }}{% endblock %}
+
+{% block body %}
+
+<!-- Modal -->
+<div class="modal fade" id="confirmDelete{{ cattle.id }}" aria-labelledby="confirmDeleteLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-sm">
+    <div class="modal-content">
+
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="confirmDeleteLabel">Excluir item</h1>
+        <button type="button" class="btn-close text-bg-warning" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+
+      <div class="modal-body">
+        Após deletar este registro, não será possível recuperálo. Deseja prosseguir?
+      </div>
+
+      <div class="modal-footer">
+        <a href="{{ path('delete_cattle', { id: cattle.id }) }}" class="btn btn-outline-danger">
+          Excluir
+        </a>
+        <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+{# Card com a vizualização de um animal #}
+<div class="pt-3">
+  <div class="card border-primary">
+    <h5 class="card-header p-3">Animal de código <small
+        class="border border-primary rounded text-primary pt-0 pb-0 p-2">{{ cattle.cod }}</small></h5>
+
+    <div class="card-body ">
+      <h5 class="card-title mb-4">Informações do animal</h5>
+
+      <table class="table table-hover table-bordered">
+        <thead class="thead-dark">
+          <th scope="col" class="text-bg-dark" style="width: 40%;">Atributo</th>
+          <th scope="col" class="text-bg-dark" style="width: 40%;">Valores</th>
+        </thead>
+
+        <tbody>
+          <tr>
+            <th scope="col">Quantidade de leite por semana (L)</th>
+            <td>{{ cattle.milk }}</td>
+          </tr>
+
+          <tr>
+            <th scope="col">Quantidade de ração por semana (Kg)</th>
+            <td>{{ cattle.weekportion }}</td>
+          </tr>
+
+          <tr>
+            <th scope="col">Peso do animal (Kg)</th>
+            <td>{{ cattle.cattleweight }}</td>
+          </tr>
+
+          <tr>
+            <th scope="col">Data de nascimento do animal (Kg)</th>
+            <td>{{ cattle.birth.format('d/m/Y') }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card-footer text-muted d-flex justify-content-between pt-4 pb-4">
+      <div>
+        <a href="#" class="btn btn-warning text-light">Enviar para abate <i
+            class="fa-regular fa-share-from-square"></i></a>
+      </div>
+
+      <div class="d-md-flex justify-content-md-end">
+        <a href="{{ path('update_cattle', { id: cattle.id }) }}" class="btn btn-success me-md-2">Atualizar <i
+            class="fa-solid fa-pen-to-square"></i></a>
+        <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDelete{{ cattle.id }}">Excluir <i
+            class="fa-solid fa-trash-can"></i></a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="text-center mt-5">
+  <a href="{{ path('homepage') }}" class="btn btn-outline-primary">Voltar à home</a>
+</div>
+
+{% endblock %}

@@ -55,7 +55,10 @@
                 <td>{{ cattle.birth.format('d/m/Y') }}</td>
                 <td>
                     {% set index = cattle.id %}
-                    
+                    <a href="{{ path('show_cattle', { id: cattle.id })}}" class="btn btn-outline-primary btn-sm">
+                        <i class="fa-solid fa-eye"></i>
+                    </a>
+
                     <a href="{{ path('update_cattle', { id: cattle.id }) }}" class="btn btn-outline-primary btn-sm">
                         <i class="fa-solid fa-pen-to-square"></i>
                     </a>
@@ -68,31 +71,31 @@
 
                 <!-- Modal -->
                 <div class="modal fade" id="confirmDelete{{ index }}" aria-labelledby="confirmDeleteLabel"
-                aria-hidden="true">
-                <div class="modal-dialog modal-dialog-centered modal-sm">
-                    <div class="modal-content">
-                        
-                        <div class="modal-header">
-                            <h1 class="modal-title fs-5" id="confirmDeleteLabel">Excluir item</h1>
-                            <button type="button" class="btn-close text-bg-warning" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                        </div>
+                    aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-sm">
+                        <div class="modal-content">
 
-                        <div class="modal-body">
-                            Após deletar este registro, não será possível recuperálo. Deseja prosseguir?
-                        </div>
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="confirmDeleteLabel">Excluir item</h1>
+                                <button type="button" class="btn-close text-bg-warning" data-bs-dismiss="modal"
+                                    aria-label="Close"></button>
+                            </div>
 
-                        <div class="modal-footer">
-                            <a href="{{ path('delete_cattle', { id: index }) }}" class="btn btn-outline-danger">
-                                Excluir
-                            </a>
-                            <button type="button" class="btn btn-outline-secondary"
-                                data-bs-dismiss="modal">Cancelar</button>
-                        </div>
+                            <div class="modal-body">
+                                Após deletar este registro, não será possível recuperálo. Deseja prosseguir?
+                            </div>
 
+                            <div class="modal-footer">
+                                <a href="{{ path('delete_cattle', { id: index }) }}" class="btn btn-outline-danger">
+                                    Excluir
+                                </a>
+                                <button type="button" class="btn btn-outline-secondary"
+                                    data-bs-dismiss="modal">Cancelar</button>
+                            </div>
+
+                        </div>
                     </div>
                 </div>
-            </div>
             </tr>
             {% endfor %}
         </tbody>
