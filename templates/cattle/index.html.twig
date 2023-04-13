@@ -41,6 +41,7 @@
                 <th scope="col">Qntd de ração (Kg)</th>
                 <th scope="col">Peso (Kg)</th>
                 <th scope="col">Data de Nascimento</th>
+                <th scope="col">slaughter</th>
                 <th scope="col">#</th>
             </tr>
         </thead>
@@ -53,6 +54,13 @@
                 <td>{{ cattle.weekportion }}</td>
                 <td>{{ cattle.cattleweight }}</td>
                 <td>{{ cattle.birth.format('d/m/Y') }}</td>
+                <td>
+                    {% if cattle.slaughter %}
+                        Sim
+                    {% else %}
+                        Não
+                    {% endif %}
+                </td>
                 <td>
                     {% set index = cattle.id %}
                     <a href="{{ path('show_cattle', { id: cattle.id })}}" class="btn btn-outline-primary btn-sm">
@@ -100,6 +108,31 @@
             {% endfor %}
         </tbody>
     </table>
+
+    <h1 class="title-page">Relatórios</h1>
+    <small class="subtitle-page">Relatórios gerais</small>
+
+    {# Card com relatórios #}
+    <div class="card text-center">
+        <div class="card-header">
+            <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="true" href="#">Total de leite por semana</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Link</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">Special title treatment</h5>
+            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <a href="#" class="btn btn-primary">Go somewhere</a>
+        </div>
+    </div>
 </div>
 {% endif %}
 {% endblock %}

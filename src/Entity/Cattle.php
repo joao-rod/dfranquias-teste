@@ -33,6 +33,9 @@ class Cattle
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTimeInterface $birth = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?bool $slaughter = false;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -94,6 +97,18 @@ class Cattle
     public function setBirth(\DateTimeInterface $birth): self
     {
         $this->birth = $birth;
+
+        return $this;
+    }
+
+    public function isSlaughter(): ?bool
+    {
+        return $this->slaughter;
+    }
+
+    public function setSlaughter(?bool $slaughter): self
+    {
+        $this->slaughter = $slaughter;
 
         return $this;
     }
