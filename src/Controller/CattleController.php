@@ -25,6 +25,7 @@ class CattleController extends AbstractController
         // Relatórios gerais'
         $report['milk'] = $cattleRepository->sumMilk();
         $report['portion'] = $cattleRepository->sumPortion();
+        $report['alimentation'] = $cattleRepository->cattleAmount();
 
         return $this->render('cattle/index.html.twig', ['data' => $data, 'report' => $report]);
     }

@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Cattle;
+use DateTime;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -55,6 +56,17 @@ class CattleRepository extends ServiceEntityRepository
             ->getQuery();
         
         return (float) $query->getSingleScalarResult();
+    }
+
+    public function cattleAmount(): int
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->where('c.birth <= :minAge OR c.week_portion > 500')
+            ->setParameter('minAge', new DateTime('-1 year'))
+            ->getQuery();
+
+        return (int) $query->getSingleScalarResult();
     }
 
 //    /**

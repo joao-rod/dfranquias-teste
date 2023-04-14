@@ -134,17 +134,15 @@
         <div class="card-body">
             <div class="tab-content" id="reportContent">
                 <div class="tab-pane fade show active" id="milk" role="tabpanel" aria-labelledby="milk-tab">
-                    <p>A quantidade total de leite produzido por semana foi de {{ report.milk }} litros.</p>
+                    <p class="card-text">A quantidade total de leite produzido por semana foi de {{ report.milk }} litros.</p>
                 </div>
                 <div class="tab-pane fade" id="portion" role="tabpanel" aria-labelledby="portion-tab">
-                    <p>São necessários {{ report.portion }}Kg de ração para esta semana.</p>
+                    <p class="card-text">São necessários {{ report.portion }}Kg de ração para esta semana.</p>
                 </div>
                 <div class="tab-pane fade" id="alimentation" role="tabpanel" aria-labelledby="alimentation-tab">
-                    <p>Conteúdo aba 3</p>
+                    <p class="card-text">Há {{ report.alimentation }} animais com idade de até 1 ano ou que consomem mais de 500kg de ração</p>
                 </div>
             </div>
-
-            <a href="#" class="btn btn-primary">Go somewhere</a>
         </div>
     </div>
 </div>
