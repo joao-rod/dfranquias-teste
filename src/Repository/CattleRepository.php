@@ -39,6 +39,15 @@ class CattleRepository extends ServiceEntityRepository
         }
     }
 
+    public function sumMilk(): float
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('SUM(c.milk)')
+            ->getQuery();
+        
+        return (float) $query->getSingleScalarResult();
+    }
+
 //    /**
 //     * @return Cattle[] Returns an array of Cattle objects
 //     */

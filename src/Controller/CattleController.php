@@ -22,7 +22,9 @@ class CattleController extends AbstractController
         $data['subTitle'] = 'Registros cadastrados no sistema';
         $data['cattles'] = $cattleRepository->findAll();
 
-        return $this->render('cattle/index.html.twig', $data);
+        $report['milk'] = $cattleRepository->sumMilk();
+
+        return $this->render('cattle/index.html.twig', ['data' => $data, 'report' => $report]);
     }
 
 

@@ -10,7 +10,7 @@
 </div>
 {% endfor %}
 
-{% if cattles is empty %}
+{% if data.cattles is empty %}
 <div class="d-flex flex-column align-items-center">
     <h4>
         Não há animais cadastrados no sistema!!
@@ -19,9 +19,9 @@
 </div>
 
 {% else %}
-<h1 class="title-page">{{ titlePage }}</h1>
+<h1 class="title-page">{{ data.titlePage }}</h1>
 <div class="subtitle-page">
-    <small>{{ subTitle }}</small>
+    <small>{{ data.subTitle }}</small>
 </div>
 
 {% block formSearch %}
@@ -47,7 +47,7 @@
         </thead>
 
         <tbody>
-            {% for cattle in cattles %}
+            {% for cattle in data.cattles %}
             <tr class="text-center">
                 <th scope="row">{{ cattle.cod }}</th>
                 <td>{{ cattle.milk }}</td>
@@ -134,7 +134,7 @@
         <div class="card-body">
             <div class="tab-content" id="reportContent">
                 <div class="tab-pane fade show active" id="milk" role="tabpanel" aria-labelledby="milk-tab">
-                    <p>Conteúdo aba 1</p>
+                    <p>A quantidade total de leite produzido por semana foi de {{ report.milk }} litros.</p>
                 </div>
                 <div class="tab-pane fade" id="portion" role="tabpanel" aria-labelledby="portion-tab">
                     <p>Conteúdo aba 2</p>
