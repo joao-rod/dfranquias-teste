@@ -48,6 +48,15 @@ class CattleRepository extends ServiceEntityRepository
         return (float) $query->getSingleScalarResult();
     }
 
+    public function sumPortion(): float
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('SUM(c.week_portion)')
+            ->getQuery();
+        
+        return (float) $query->getSingleScalarResult();
+    }
+
 //    /**
 //     * @return Cattle[] Returns an array of Cattle objects
 //     */
