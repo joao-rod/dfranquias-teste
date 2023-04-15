@@ -3,6 +3,13 @@
 {% block title %} Abate de animal {% endblock %}
 
 {% block body %}
+{% for success in app.flashes('success') %}
+<div class="alert alert-info alert-dismissible fade show container text-center fixed-top swing" role="alert">
+    {{ success }}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+
 {% if data.cattles is empty %}
 <div class="d-flex flex-column align-items-center">
 {{ parent() }}
@@ -76,7 +83,7 @@
               </div>
 
               <div class="modal-footer">
-                <a href="{{ path('delete_cattle', { id: cattle.id }) }}" class="btn btn-outline-danger">
+                <a href="{{ path('send_slaughter', { id: cattle.id }) }}" class="btn btn-outline-danger">
                   Confirmar
                 </a>
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>

@@ -138,4 +138,17 @@ class CattleController extends AbstractController
         return $this->render('cattle/slaughter.html.twig', ['data' => $data]);
     }
     
+
+    #[Route('/cattle/slaughter/send/{id}', name: 'send_slaughter')]
+    public function sendSlaughter($id, CattleRepository $cattleRepository, EntityManagerInterface $entityManager): Response
+    {
+        $cattle = $cattleRepository->find($id);
+        $cattle->setSlaughter(true);
+
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Animal enviado para abate  com sucesso!!');
+
+        return $this->redirectToRoute('slaughter_cattle');
+    }
 }
