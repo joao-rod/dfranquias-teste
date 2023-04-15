@@ -12,6 +12,14 @@ main {
   min-height: 100vh;
 }
 
+#btn-slaughter-disabled{
+  opacity: 45%;
+}
+
+#btn-slaughter-disabled:hover {
+  cursor: not-allowed;
+}
+
 footer {
   background-color: #282a36;
 }

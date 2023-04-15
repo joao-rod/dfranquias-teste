@@ -1,0 +1,94 @@
+{% extends 'cattle/index.html.twig' %}
+
+{% block title %} Abate de animal {% endblock %}
+
+{% block body %}
+{% if data.cattles is empty %}
+<div class="d-flex flex-column align-items-center">
+{{ parent() }}
+
+{% else %}
+<div>
+  <h1 class="title-page">{{ data.titlePage }}</h1>
+  <div class="subtitle-page">
+      <small>{{ data.subTitle }}</small>
+  </div>
+  <table class="table table-hover table-bordered">
+    <thead class="thead-dark">
+      <tr class="text-center">
+        <th scope="col">Cod</th>
+        <th scope="col">Qntd de leite (L)</th>
+        <th scope="col">Ração por semana (Kg)</th>
+        <th scope="col">Ração por dia (Kg)</th>
+        <th scope="col">Peso (Kg)</th>
+        <th scope="col">Peso (arroba)</th>
+        <th scope="col">Data de Nascimento</th>
+        <th scope="col">#</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      {% for cattle in data.cattles %}
+      <tr class="text-center">
+        <th scope="row">{{ cattle.cod }}</th>
+        <td>{{ cattle.milk }}</td>
+        <td>{{ cattle.weekportion }}</td>
+        <td>{{ (cattle.weekportion / 7) | number_format('2', ',') }}</td>
+        <td>{{ cattle.cattleweight }}</td>
+        <td>{{ (cattle.cattleweight / 15) | number_format('2', ',') }}</td>
+        <td>
+          {% set age = date().diff(date(cattle.birth)) %}
+          {{ age.y }} ano(s) e {{ age.m }} mese(s)
+        </td>
+        <td>
+          {# {{ dump(data.toSlaughter) }} #}
+          {% if data.toSlaughter[loop.index0] %}
+            {% if cattle.slaughter %}
+              <button class="btn btn-dark btn-sm" disabled>
+                Abatido <i class="fa-solid fa-xmark"></i>
+              </button>
+            {% else %}
+            <button class="btn btn-success btn-sm" data-bs-toggle="modal"
+              data-bs-target="#confirmSlaughter{{ cattle.id }}">
+              Abater <i class="fa-solid fa-share-from-square"></i>
+            </button>
+            {% endif %}
+          {% else %}
+            <button id="btn-slaughter-disabled" class="btn btn-success text-white btn-sm">
+              Abater <i class="fa-regular fa-share-from-square"></i>
+            </button>
+          {% endif %}
+        </td>
+
+        <!-- Modal -->
+        <div class="modal fade" id="confirmSlaughter{{ cattle.id }}" aria-labelledby="confirmSlaughterLabel" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content">
+
+              <div class="modal-header">
+                <h1 class="modal-title fs-5" id="confirmSlaughterLabel">Abater animal</h1>
+                <button type="button" class="btn-close text-bg-warning" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+              </div>
+
+              <div class="modal-body">
+                Após confirmar o abate para este animal, não será possível desfazer a operação. Deseja prosseguir?
+              </div>
+
+              <div class="modal-footer">
+                <a href="{{ path('delete_cattle', { id: cattle.id }) }}" class="btn btn-outline-danger">
+                  Confirmar
+                </a>
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endif %}
+{% endblock %}

@@ -69,6 +69,30 @@ class CattleRepository extends ServiceEntityRepository
         return (int) $query->getSingleScalarResult();
     }
 
+    public function sendToSlaughter(): array
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('c.id')
+            ->addSelect('
+                (CASE
+                    WHEN c.birth <= :minAge OR
+                        c.milk < :minMilk OR
+                        (c.milk < :minMilk2 AND (c.week_portion / 7) > :minPortionDay) OR
+                        (c.cattle_weight / 15) > :minWeight
+                    THEN 1
+                    ELSE 0
+                END) as conditions'
+            )
+            ->setParameter('minAge', new DateTime('-5 year'))
+            ->setParameter('minMilk', 40)
+            ->setParameter('minMilk2', 70)
+            ->setParameter('minPortionDay', 50)
+            ->setParameter('minWeight', 18)
+            ->getQuery();
+
+        return $query->getArrayResult();
+    }
+
 //    /**
 //     * @return Cattle[] Returns an array of Cattle objects
 //     */

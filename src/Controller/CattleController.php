@@ -122,4 +122,20 @@ class CattleController extends AbstractController
 
         return $this->render('cattle/show.html.twig', $data);
     }
+
+
+    #[Route('/cattle/slaughter/', name: 'slaughter_cattle')]
+    public function reportSlaughter(CattleRepository $cattleRepository): Response
+    {
+        $toSlaughter = $cattleRepository->sendToSlaughter();
+        $resultToSlaughter = array_column($toSlaughter, 'conditions');
+
+        $data['titlePage'] = 'Área de abate';
+        $data['subTitle'] = 'Enviar animais aptos ao abate';
+        $data['toSlaughter'] = $resultToSlaughter;
+        $data['cattles'] = $cattleRepository->findAll();
+        
+        return $this->render('cattle/slaughter.html.twig', ['data' => $data]);
+    }
+    
 }
