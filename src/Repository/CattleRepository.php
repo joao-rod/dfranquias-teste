@@ -40,6 +40,14 @@ class CattleRepository extends ServiceEntityRepository
         }
     }
 
+    public function findAllOrderByBirth() {
+        $query = $this->createQueryBuilder('c')
+            ->orderBy('c.cod', 'ASC')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
     public function sumMilk(): float
     {
         $query = $this->createQueryBuilder('c')

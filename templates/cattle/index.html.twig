@@ -19,6 +19,7 @@
 </div>
 
 {% else %}
+{% block content %}
 <h1 class="title-page">{{ data.titlePage }}</h1>
 <div class="subtitle-page">
     <small>{{ data.subTitle }}</small>
@@ -109,6 +110,12 @@
         </tbody>
     </table>
 
+    {% block pagination %}
+        {{ knp_pagination_render(data.cattles) }}
+    {% endblock %}
+{% endblock %}
+    
+    {% block reports %}
     <h1 class="title-page">Relatórios</h1>
     <small class="subtitle-page">Relatórios gerais</small>
 
@@ -145,6 +152,7 @@
             </div>
         </div>
     </div>
+    {% endblock %}
 </div>
 {% endif %}
 {% endblock %}

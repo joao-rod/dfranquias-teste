@@ -7,6 +7,7 @@ use App\Form\CattleType;
 use App\Repository\CattleRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,13 +17,19 @@ use Symfony\Component\Routing\Annotation\Route;
 class CattleController extends AbstractController
 {
     #[Route('/', name: 'homepage')]
-    public function index(CattleRepository $cattleRepository): Response
+    public function index(Request $request, CattleRepository $cattleRepository, PaginatorInterface $paginator): Response
     {
         $data['titlePage'] = 'Todos os registros';
         $data['subTitle'] = 'Registros cadastrados no sistema';
-        $data['cattles'] = $cattleRepository->findAll();
+        $query = $cattleRepository->findAllOrderByBirth();
 
-        // Relatórios gerais'
+        $data['cattles'] = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            5
+        );
+
+        // Relatórios gerais
         $report['milk'] = $cattleRepository->sumMilk();
         $report['portion'] = $cattleRepository->sumPortion();
         $report['alimentation'] = $cattleRepository->cattleAmount();
@@ -102,7 +109,7 @@ class CattleController extends AbstractController
 
 
     #[Route('/cattle/search', name: 'search_cattle')]
-    public function search(Request $request, CattleRepository $cattleRepository): Response
+    public function search(Request $request, CattleRepository $cattleRepository, PaginatorInterface  $paginator): Response
     {
         $codSearch = $request->request->get('search');
         $date = DateTime::createFromFormat("Y-m-d", $codSearch);
@@ -110,8 +117,14 @@ class CattleController extends AbstractController
         $data['titlePage'] = 'Resultados da sua busca';
         $data['subTitle'] = 'Registros cadastrados encontrados no sistema';
         $data['cattles'] = $cattleRepository->findBy(['birth' => $date]);
+        
+        // $data['cattles'] = $paginator->paginate(
+        //     $query,
+        //     $request->query->getInt('page', 1),
+        //     5
+        // );
 
-        return $this->render('cattle/search.html.twig', $data);
+        return $this->render('cattle/search.html.twig', ['data' => $data]);
     }
 
 
