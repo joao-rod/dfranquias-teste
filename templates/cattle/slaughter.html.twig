@@ -96,6 +96,10 @@
       {% endfor %}
     </tbody>
   </table>
+
+  {% block pagination %}
+    {{ knp_pagination_render(data.cattles) }}
+  {% endblock %}
 </div>
 {% endif %}
 {% endblock %}

@@ -134,7 +134,7 @@ class CattleController extends AbstractController
 
 
     #[Route('/cattle/slaughter/', name: 'slaughter_cattle')]
-    public function reportSlaughter(CattleRepository $cattleRepository): Response
+    public function reportSlaughter(Request $request, CattleRepository $cattleRepository, PaginatorInterface $paginator): Response
     {
         $toSlaughter = $cattleRepository->sendToSlaughter();
         $resultToSlaughter = array_column($toSlaughter, 'conditions');
@@ -142,7 +142,13 @@ class CattleController extends AbstractController
         $data['titlePage'] = 'Área de abate';
         $data['subTitle'] = 'Enviar animais aptos ao abate';
         $data['toSlaughter'] = $resultToSlaughter;
-        $data['cattles'] = $cattleRepository->findAll();
+        $query = $cattleRepository->findAllOrderByBirth();
+
+        $data['cattles'] = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1),
+            7
+        );
         
         return $this->render('cattle/slaughter.html.twig', ['data' => $data]);
     }

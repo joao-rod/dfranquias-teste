@@ -42,7 +42,7 @@ class CattleRepository extends ServiceEntityRepository
 
     public function findAllOrderByBirth() {
         $query = $this->createQueryBuilder('c')
-            ->orderBy('c.cod', 'ASC')
+            ->orderBy('c.birth', 'ASC')
             ->getQuery();
 
         return $query->getResult();
