@@ -159,6 +159,7 @@ class CattleController extends AbstractController
     {
         $cattle = $cattleRepository->find($id);
         $cattle->setSlaughter(true);
+        $cattle->setDateslaughter(new DateTime());
 
         $entityManager->flush();
 
