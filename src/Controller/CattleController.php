@@ -26,7 +26,7 @@ class CattleController extends AbstractController
         $data['cattles'] = $paginator->paginate(
             $query,
             $request->query->getInt('page', 1),
-            5
+            10
         );
 
         // Relatórios gerais

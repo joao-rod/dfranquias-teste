@@ -34,6 +34,7 @@ class CattleType extends AbstractType {
       ])
 
       ->add('birth', BirthdayType::class, [
+        'years' => range(date('Y'), date('Y') - 50, -1),
         'format' => 'dd MMMM yyyy',
         'placeholder' => [
           'day' => 'Selecione o dia',

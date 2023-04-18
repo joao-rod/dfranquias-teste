@@ -68,6 +68,7 @@
         </td>
 
         <!-- Modal -->
+        {% block modal %}
         <div class="modal fade" id="confirmSlaughter{{ cattle.id }}" aria-labelledby="confirmSlaughterLabel" aria-hidden="true">
           <div class="modal-dialog modal-dialog-centered modal-sm">
             <div class="modal-content">
@@ -92,6 +93,7 @@
             </div>
           </div>
         </div>
+        {% endblock %}
       </tr>
       {% endfor %}
     </tbody>

@@ -1,4 +1,4 @@
-{% extends 'cattle/index.html.twig' %}
+{% extends 'cattle/slaughter.html.twig' %}
 
 {% block title %}Animal de código: {{ cattle.cod }}{% endblock %}
 
@@ -75,16 +75,26 @@
     </div>
 
     <div class="card-footer text-muted d-flex justify-content-between pt-4 pb-4">
+      {% if cattle.slaughter %}
+      <button class="btn btn-dark btn-sm" disabled>
+        Animal abatido <i class="fa-solid fa-xmark"></i>
+      </button>
+      {% else %}
       <div>
-        <a href="#" class="btn btn-warning text-light">Enviar para abate <i
+        <a class="btn btn-warning text-light" data-bs-toggle="modal"
+          data-bs-target="#confirmSlaughter{{ cattle.id }}">Enviar para abate <i
             class="fa-regular fa-share-from-square"></i></a>
       </div>
+      {% endif %}
 
       <div class="d-md-flex justify-content-md-end">
         <a href="{{ path('update_cattle', { id: cattle.id }) }}" class="btn btn-success me-md-2">Atualizar <i
             class="fa-solid fa-pen-to-square"></i></a>
         <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#confirmDelete{{ cattle.id }}">Excluir <i
             class="fa-solid fa-trash-can"></i></a>
+        {% block modal %}
+        {{ parent() }}
+        {% endblock %}
       </div>
     </div>
   </div>
