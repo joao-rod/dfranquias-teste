@@ -111,18 +111,14 @@ class CattleController extends AbstractController
     #[Route('/cattle/search', name: 'search_cattle')]
     public function search(Request $request, CattleRepository $cattleRepository, PaginatorInterface  $paginator): Response
     {
-        $codSearch = $request->request->get('search');
+        $codSearch = $request->request->get('search');        
         $date = DateTime::createFromFormat("Y-m-d", $codSearch);
 
         $data['titlePage'] = 'Resultados da sua busca';
         $data['subTitle'] = 'Registros cadastrados encontrados no sistema';
-        $data['cattles'] = $cattleRepository->findBy(['birth' => $date]);
-        
-        // $data['cattles'] = $paginator->paginate(
-        //     $query,
-        //     $request->query->getInt('page', 1),
-        //     5
-        // );
+        $query = $cattleRepository->findBy(['birth' => $date]);
+
+        $data['cattles'] = $paginator->paginate($query);
 
         return $this->render('cattle/search.html.twig', ['data' => $data]);
     }
