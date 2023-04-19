@@ -65,11 +65,24 @@
             <td>{{ cattle.birth.format('d/m/Y') }}</td>
           </tr>
 
-          <tr>
-            {% set age = date().diff(date(cattle.birth)) %}
-            <th scope="col">Idade do animal</th>
-            <td>{{ age.y }} ano(s) e {{ age.m }} mese(s)</td>
-          </tr>
+          {% if not cattle.slaughter %}
+            <tr>
+              {% set age = date().diff(date(cattle.birth)) %}
+              <th scope="col">Idade do animal</th>
+              <td>{{ age.y }} ano(s) e {{ age.m }} mese(s)</td>
+            </tr>
+          {% else %}
+            <tr>
+              <th scope="col">Data do abate do animal (Kg)</th>
+              <td>{{ cattle.dateslaughter.format('d/m/Y') }}</td>
+            </tr>
+
+            <tr>
+              {% set age = cattle.dateslaughter.diff(cattle.birth) %}
+              <th scope="col">Idade do animal no abate</th>
+              <td>{{ age.y }} ano(s) e {{ age.m }} mese(s)</td>
+            </tr>
+          {% endif %}
         </tbody>
       </table>
     </div>
