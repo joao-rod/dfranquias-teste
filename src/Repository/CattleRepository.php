@@ -81,6 +81,7 @@ class CattleRepository extends ServiceEntityRepository
     {
         $query = $this->createQueryBuilder('c')
             ->select('c.id')
+            ->orderBy('c.birth', 'ASC')
             ->addSelect('
                 (CASE
                     WHEN c.birth <= :minAge OR
