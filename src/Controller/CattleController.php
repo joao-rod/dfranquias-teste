@@ -31,8 +31,20 @@ class CattleController extends AbstractController
 
         // Relatórios gerais
         $report['milk'] = $cattleRepository->sumMilk();
+        $report['avgMilk'] = $cattleRepository->averageMilk();
+
         $report['portion'] = $cattleRepository->sumPortion();
+        $report['avgPortion'] = $cattleRepository->averagePortion();
+
         $report['alimentation'] = $cattleRepository->cattleAmount();
+        $report['avgAlimentationMilk'] = $cattleRepository->averageAmountMilk();
+        $report['avgAlimentationPortion'] = $cattleRepository->averageAmountPortion();
+        
+        $report['countCattlesSlaughter'] = $cattleRepository->countCattlesSlaughter();
+        $report['sumMilkSlaughter'] = $cattleRepository->sumMilkSlaughter();
+        $report['sumPortionSlaughter'] = $cattleRepository->sumPortionSlaughter();
+        $report['minDateSlaughter'] = $cattleRepository->findByMinDateSlaughater();
+        $report['maxDateSlaughter'] = $cattleRepository->findByMaxDateSlaughater();
 
         return $this->render('cattle/index.html.twig', ['data' => $data, 'report' => $report]);
     }

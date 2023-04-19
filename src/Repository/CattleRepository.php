@@ -48,33 +48,80 @@ class CattleRepository extends ServiceEntityRepository
         return $query->getResult();
     }
 
+    // Milk
     public function sumMilk(): float
     {
         $query = $this->createQueryBuilder('c')
             ->select('SUM(c.milk)')
+            ->where('c.slaughter = 0')
             ->getQuery();
         
         return (float) $query->getSingleScalarResult();
     }
 
+    public function averageMilk(): float
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('AVG(c.milk)')
+            ->where('c.slaughter = 0')
+            ->getQuery();
+
+        return (float) $query->getSingleScalarResult();
+    }
+
+    // Portion
     public function sumPortion(): float
     {
         $query = $this->createQueryBuilder('c')
             ->select('SUM(c.week_portion)')
+            ->where('c.slaughter = 0')
             ->getQuery();
         
         return (float) $query->getSingleScalarResult();
     }
 
+    public function averagePortion(): float
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('AVG(c.week_portion)')
+            ->where('c.slaughter = 0')
+            ->getQuery();
+
+        return (float) $query->getSingleScalarResult();
+    }
+
+    // Alimentation
     public function cattleAmount(): int
     {
         $query = $this->createQueryBuilder('c')
             ->select('COUNT(c.id)')
-            ->where('c.birth <= :minAge OR c.week_portion > 500')
+            ->where('c.birth >= :minAge OR c.week_portion > 500')
             ->setParameter('minAge', new DateTime('-1 year'))
             ->getQuery();
 
         return (int) $query->getSingleScalarResult();
+    }
+
+    public function averageAmountMilk(): float    
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('AVG(c.milk)')
+            ->where('c.birth >= :minAge OR c.week_portion > 500')
+            ->setParameter('minAge', new DateTime('-1 year'))
+            ->getQuery();
+
+        return (float) $query->getSingleScalarResult();
+    }
+
+    public function averageAmountPortion(): float    
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('AVG(c.week_portion)')
+            ->where('c.birth >= :minAge OR c.week_portion > 500')
+            ->setParameter('minAge', new DateTime('-1 year'))
+            ->getQuery();
+
+        return (float) $query->getSingleScalarResult();
     }
 
     public function sendToSlaughter(): array
@@ -100,6 +147,57 @@ class CattleRepository extends ServiceEntityRepository
             ->getQuery();
 
         return $query->getArrayResult();
+    }
+
+    // Slaughter
+    public function countCattlesSlaughter(): int
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('COUNT(c.id)')
+            ->where('c.slaughter = 1')
+            ->getQuery();
+        
+        return (int) $query->getSingleScalarResult();
+    }
+
+    public function findByMaxDateSlaughater()
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('MAX(c.birth)')
+            ->where('c.slaughter = 1')
+            ->getQuery();
+        
+        return $query->getSingleScalarResult();
+    }
+
+    public function findByMinDateSlaughater()
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('MIN(c.birth)')
+            ->where('c.slaughter = 1')
+            ->getQuery();
+        
+        return $query->getSingleScalarResult();
+    }
+
+    public function sumMilkSlaughter(): float
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('SUM(c.milk)')
+            ->where('c.slaughter = 1')
+            ->getQuery();
+        
+        return (float) $query->getSingleScalarResult();
+    }
+
+    public function sumPortionSlaughter(): float
+    {
+        $query = $this->createQueryBuilder('c')
+            ->select('SUM(c.week_portion)')
+            ->where('c.slaughter = 1')
+            ->getQuery();
+
+        return (float) $query->getSingleScalarResult();
     }
 
 //    /**

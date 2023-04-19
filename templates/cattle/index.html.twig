@@ -114,10 +114,10 @@
     </table>
 
     {% block pagination %}
-        {{ knp_pagination_render(data.cattles) }}
+    {{ knp_pagination_render(data.cattles) }}
     {% endblock %}
-{% endblock %}
-    
+    {% endblock %}
+
     {% block reports %}
     <h1 class="title-page">Relatórios</h1>
     <small class="subtitle-page">Relatórios gerais</small>
@@ -127,16 +127,24 @@
         <div class="card-header">
             <ul class="nav nav-tabs card-header-tabs" id="reports" role="tablist">
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link text-secondary fw-bold active" id="milk-tab" data-bs-toggle="tab" data-bs-target="#milk"
-                        type="button" role="tab" aria-controls="milk" aria-selected="true">Leite por semana</a>
+                    <a class="nav-link text-secondary fw-bold active" id="milk-tab" data-bs-toggle="tab"
+                        data-bs-target="#milk" type="button" role="tab" aria-controls="milk" aria-selected="true">Leite
+                        por semana</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link text-secondary fw-bold" id="portion-tab" data-bs-toggle="tab" data-bs-target="#portion"
-                        type="button" role="tab" aria-controls="portion" aria-selected="false">Ração por semana</a>
+                    <a class="nav-link text-secondary fw-bold" id="portion-tab" data-bs-toggle="tab"
+                        data-bs-target="#portion" type="button" role="tab" aria-controls="portion"
+                        aria-selected="false">Ração por semana</a>
                 </li>
                 <li class="nav-item" role="presentation">
-                    <a class="nav-link text-secondary fw-bold" id="alimentation-tab" data-bs-toggle="tab" data-bs-target="#alimentation"
-                        type="button" role="tab" aria-controls="alimentation" aria-selected="false">Alimentação animal</a>
+                    <a class="nav-link text-secondary fw-bold" id="alimentation-tab" data-bs-toggle="tab"
+                        data-bs-target="#alimentation" type="button" role="tab" aria-controls="alimentation"
+                        aria-selected="false">Alimentação animal</a>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <a class="nav-link text-secondary fw-bold" id="slaughter-tab" data-bs-toggle="tab"
+                        data-bs-target="#slaughter" type="button" role="tab" aria-controls="slaughter"
+                        aria-selected="false">Abate de animais</a>
                 </li>
             </ul>
         </div>
@@ -144,13 +152,29 @@
         <div class="card-body">
             <div class="tab-content" id="reportContent">
                 <div class="tab-pane fade show active" id="milk" role="tabpanel" aria-labelledby="milk-tab">
-                    <p class="card-text">A quantidade total de leite produzido por semana foi de {{ report.milk }} litros.</p>
+                    <p class="card-text">Total de leite produzido por semana: {{ report.milk|number_format('2', ',', '.') }} L</p><hr>
+                    <p class="card-text">Média de leite produzido por animal: {{ report.avgMilk|number_format('2', ',', '.') }} L</p><hr>
+                    <p class="card-text">Média diária de leite produzido por semana: {{ ((report.milk) / 7)|number_format('2', ',', '.') }} L</p><hr>
                 </div>
+
                 <div class="tab-pane fade" id="portion" role="tabpanel" aria-labelledby="portion-tab">
-                    <p class="card-text">São necessários {{ report.portion }}Kg de ração para esta semana.</p>
+                    <p class="card-text">Total de ração consumida por semana: {{ report.portion|number_format('2', ',', '.') }} Kg</p><hr>
+                    <p class="card-text">Média de ração consumida por animal: {{ report.avgPortion|number_format('2', ',', '.') }} Kg</p><hr>
+                    <p class="card-text">Média diária de ração consumida por semana: {{ ((report.portion) / 7)|number_format('2', ',', '.') }} Kg</p><hr>
                 </div>
+
                 <div class="tab-pane fade" id="alimentation" role="tabpanel" aria-labelledby="alimentation-tab">
-                    <p class="card-text">Há {{ report.alimentation }} animais com idade de até 1 ano ou que consomem mais de 500kg de ração</p>
+                    <p class="card-text">Total de animais com idade de até 1 ano ou que consomem
+                        mais de 500kg de ração: {{ report.alimentation }}</p><hr>
+                    <p class="card-text">Média de leite produzido por animal que se enquadre na condição: {{ report.avgAlimentationMilk }}L</p><hr>
+                    <p class="card-text">Média de ração consumida por animal que se enquadre na condição: {{ report.avgAlimentationPortion }}Kg</p><hr>
+                </div>
+                <div class="tab-pane fade" id="slaughter" role="tabpanel" aria-labelledby="slaughter-tab">
+                    <p class="card-text">Total de animais abatidos: {{ report.countCattlesSlaughter }}</p><hr>
+                    <p class="card-text">Total de leite que era produzido por esses animais: {{ report.sumMilkSlaughter|number_format('2', ',', '.') }}L</p><hr>
+                    <p class="card-text">Total de ração que era consumida por esses animais: {{ report.sumPortionSlaughter|number_format('2', ',', '.') }}Kg</p><hr>
+                    <p class="card-text">Data de nascimento do animal mais novo abatido: {{ date(report.maxDateSlaughter).format('d/m/Y') }}</p><hr>
+                    <p class="card-text">Data de nascimento do animal mais novo velho: {{ date(report.minDateSlaughter).format('d/m/Y') }}</p><hr>
                 </div>
             </div>
         </div>
