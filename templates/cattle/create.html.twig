@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Cadastro{% endblock %}
+{% block title %}{{ titlePage }}{% endblock %}
 
 {% block body %}
 <h1 class="title-page">{{ titlePage }}</h1>
@@ -9,9 +9,29 @@
 </div>
 
 <div>
-  {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn btn-primary" type="submit">Salvar</button>
-  {{ form_end(form) }}
+  {% if form_visible %}
+    {{ form_start(form) }}
+      {{ form_widget(form) }}
+      <button class="btn btn-primary" type="submit">Salvar</button>
+    {{ form_end(form) }}
+
+  {% else %}
+    {% if cattle.slaughter %}
+      <div class="alert alert-warning" role="alert">
+        Este animal não pode ser editado pois já foi abatido.
+      </div>
+      {{ form_start(form) }}
+        {% for input in form %}
+          {{ form_row(input, {'attr': {'disabled': true}}) }}
+        {% endfor %}
+        <button class="btn btn-secondary" type="submit" disabled>Atualizar</button>
+      {{ form_end(form) }}
+    {% else %}
+      {{ form_start(form) }}
+        {{ form_widget(form) }}
+        <button class="btn btn-primary" type="submit">Atualizar</button>
+      {{ form_end(form) }}
+    {% endif %}
+  {% endif %}
 </div>
 {% endblock %}

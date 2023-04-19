@@ -49,6 +49,7 @@ class CattleController extends AbstractController
         $data['titlePage'] = 'Novo registro';
         $data['subTitle'] = 'Cadastrar novo animal no sistema';
         $data['form'] = $form;
+        $data['form_visible'] = true;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->persist($cattle);
@@ -60,9 +61,6 @@ class CattleController extends AbstractController
         }
 
         return $this->renderForm('cattle/create.html.twig', $data);
-        // return $this->render('cattle/create.html.twig', [
-        //     'form' => $form->createView(),
-        // ]);
     }
 
 
@@ -70,17 +68,18 @@ class CattleController extends AbstractController
     public function update($id, Request $request, EntityManagerInterface $entityManager, CattleRepository $cattleRepository)
     {
         $cattle = $cattleRepository->find($id);
-
-        // $form = $this->createForm(CattleType::class, $cattle)->remove('cod');
         $form = $this->createForm(CattleType::class, $cattle)->add('cod', IntegerType::class, [
             'label' => 'Código do animal',
             'disabled' => true,
         ]);
+
         $form->handleRequest($request);
 
         $data['titlePage'] = 'Atualizar registro';
         $data['subTitle'] = 'Modificar dados do animal no sistema';
+        $data['cattle'] = $cattle;
         $data['form'] = $form;
+        $data['form_visible'] = false;
 
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
