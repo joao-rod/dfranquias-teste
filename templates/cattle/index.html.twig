@@ -42,7 +42,6 @@
                 <th scope="col">Qntd de ração (Kg)</th>
                 <th scope="col">Peso (Kg)</th>
                 <th scope="col">Data de Nascimento</th>
-                <th scope="col">slaughter</th>
                 <th scope="col">#</th>
             </tr>
         </thead>
@@ -55,13 +54,6 @@
                 <td>{{ cattle.weekportion }}</td>
                 <td>{{ cattle.cattleweight }}</td>
                 <td>{{ cattle.birth.format('d/m/Y') }}</td>
-                <td>
-                    {% if cattle.slaughter %}
-                    Sim
-                    {% else %}
-                    Não
-                    {% endif %}
-                </td>
                 <td>
                     {% set index = cattle.id %}
                     <a href="{{ path('show_cattle', { id: cattle.id })}}" class="btn btn-outline-primary btn-sm">
